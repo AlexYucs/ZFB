@@ -1,1 +1,2 @@
 
+web: gunicorn messbot:app
