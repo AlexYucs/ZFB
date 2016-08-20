@@ -1,0 +1,11 @@
+{
+  "api_key": "fill in your bot api key",
+  "interpreter": "tools/dfrotz",
+  "stories": [
+    {
+      "name": "Zork 1",
+      "abbrev": "z1",
+      "filename": "zork1.z5"
+    }
+  ]
+}
