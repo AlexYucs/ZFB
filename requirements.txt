@@ -1,4 +1,4 @@
-queue
+Queue
 redis
 cycler==0.10.0
 Flask==0.10.1
