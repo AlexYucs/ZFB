@@ -5,7 +5,7 @@
 # this code is still somewhat shitty...
 
 import os
-import queue
+import Queue
 import subprocess
 import sys
 import threading
