@@ -73,7 +73,7 @@ def handle_messages():
     for sender, message in messaging_events(payload):
       if type(message) is not None:
         func = z5bot.parser.get_function(message)
-        chat = models.Chat.get_instance_or_create(sender)
+        chat = models.Chat.get_instance_or_create(int(sender))
         func(sender, message, z5bot, chat)
         
         
