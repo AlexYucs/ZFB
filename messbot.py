@@ -39,9 +39,10 @@ def handle_messages():
     z5bot = models.Z5Bot.get_instance_or_create()
     
     for sender, message in messaging_events(payload):
-      func = z5bot.parser.get_function(message)
-      chat = models.Chat.get_instance_or_create(sender)
-      func(sender, message, z5bot, chat)
+      if type(message) is not None:
+        func = z5bot.parser.get_function(message)
+        chat = models.Chat.get_instance_or_create(sender)
+        func(sender, message, z5bot, chat)
         
         
 #Sorts messages
