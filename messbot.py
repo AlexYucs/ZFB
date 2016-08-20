@@ -38,6 +38,18 @@ def handle_verification():
 def handle_messages():
     print "Handling Messages"
     payload = request.get_data()
+    with open('config.json', 'r') as f:
+      config = json.load(f)
+    
+
+    for story in config['stories']:
+      models.Story(
+        name=story['name'],
+        abbrev=story['abbrev'],
+        filename=story['filename']
+      )
+    
+    
     z5bot = models.Z5Bot.get_instance_or_create()
     p = parser.Parser()
     p.add_default(cmd_default)
