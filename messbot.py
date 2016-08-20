@@ -234,7 +234,7 @@ if __name__ == '__main__':
   p.add_command('/ping', cmd_ping)
   z5bot.add_parser(p)
   
-   r = redis.StrictRedis(
+  r = redis.StrictRedis(
       host=config['redis']['host'],
       port=config['redis']['port'],
       db=config['redis']['db'],
