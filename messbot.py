@@ -29,14 +29,20 @@ def handle_verification():
     print "Verification failed!"
     return 'Error, wrong validation token'
 
+
+
 #messaging
 @app.route('/', methods=['POST'])
 def handle_messages():
     print "Handling Messages"
     payload = request.get_data()
+    z5bot = models.Z5Bot.get_instance_or_create()
     
     for sender, message in messaging_events(payload):
-        send_message(PAT, sender, message)
+      func = z5bot.parser.get_function(message)
+      chat = models.Chat.get_instance_or_create(sender)
+      func(sender, message, z5bot, chat)
+        
         
 #Sorts messages
 def messaging_events(payload):
@@ -53,12 +59,12 @@ def messaging_events(payload):
 
 
 #Send the message. Limited to 320 char
-def send_message(token, recipient, text):
+def sendMessage(recipient, text):
   """Send the message text to recipient with id recipient.
   """
 
   r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-    params={"access_token": token},
+    params={"access_token": PAT},
     data=json.dumps({
       "recipient": {"id": recipient},
       "message": {"text": text.decode('unicode_escape')}
@@ -69,38 +75,37 @@ def send_message(token, recipient, text):
 
 
 
-def cmd_default(bot, message, z5bot, chat):
+def cmd_default(sender, message, z5bot, chat):
     # gameplay messages will be sent here
-    if message.text.strip().lower() == 'load':
+    if message.strip().lower() == 'load':
         text = 'Please use /load.'
-        return bot.sendMessage(message.chat_id, text)
+        return sendMessage(sender, text)
 
-    if message.text.strip().lower() == 'save':
+    if message.strip().lower() == 'save':
         text = 'Your progress is being saved automatically. But /load is available.'
-        return bot.sendMessage(message.chat_id, text)
+        return sendMessage(sender, text)
 
     if not chat.has_story():
         text = 'Please use the /select command to select a game.'
-        return bot.sendMessage(message.chat_id, text)
+        return sendMessage(sender, text)
 
     # here, stuff is sent to the interpreter
-    z5bot.redis.rpush('%d:%s' % (message.chat_id, chat.story.abbrev), message.text)
-    z5bot.process(message.chat_id, message.text)
+    z5bot.redis.rpush('%d:%s' % (sender, chat.story.abbrev), message)
+    z5bot.process(sender, message)
 
-    received = z5bot.receive(message.chat_id)
-    reply = bot.sendMessage(message.chat_id, received)
-    log_dialog(message, reply)
+    received = z5bot.receive(sender)
+    reply = sendMessage(sender, received)
 
     if ' return ' in received.lower() or ' enter ' in received.lower():
         notice = '(Note: You are able to do use the return key by typing /enter.)'
-        return bot.sendMessage(message.chat_id, notice)
+        return sendMessage(sender, notice)
 
-def cmd_start(bot, message, *args):
-    text =  'Welcome, %s!\n' % message.from_user.first_name
+def cmd_start(sender, message, *args):
+    text =  'Welcome!\n' 
     text += 'Please use the /select command to select a game.\n'
-    return bot.sendMessage(message.chat_id, text)
+    return sendMessage(sender, text)
 
-def cmd_select(bot, message, z5bot, chat):
+def cmd_select(sender, message, z5bot, chat):
     selection = 'For "%s", write /select %s.'
     msg_parts = []
     for story in models.Story.instances:
@@ -109,71 +114,71 @@ def cmd_select(bot, message, z5bot, chat):
     text = '\n'.join(msg_parts)
 
     for story in models.Story.instances:
-        if ' ' in message.text and message.text.strip().lower().split(' ')[1] == story.abbrev:
+        if ' ' in message and message.strip().lower().split(' ')[1] == story.abbrev:
             chat.set_story(models.Story.get_instance_by_abbrev(story.abbrev))
             z5bot.add_chat(chat)
-            reply = bot.sendMessage(message.chat_id, 'Starting "%s"...' % story.name)
-            log_dialog(message, reply)
+            reply = sendMessage(sender, 'Starting "%s"...' % story.name)
+            
             notice  = 'Your progress will be saved automatically.'
-            reply = bot.sendMessage(message.chat_id, notice)
-            log_dialog(message, reply)
-            reply = bot.sendMessage(message.chat_id, z5bot.receive(message.chat_id))
-            log_dialog(message, reply)
-            if z5bot.redis.exists('%d:%s' % (message.chat_id, chat.story.abbrev)):
+            reply = sendMessage(sender, notice)
+            
+            reply = sendMessage(sender, z5bot.receive(sender))
+            
+            if z5bot.redis.exists('%d:%s' % (sender, chat.story.abbrev)):
                 notice  = 'Some progress in %s already exists. Use /load to restore it ' % (chat.story.name)
                 notice += 'or /clear to reset your recorded actions.'
-                reply = bot.sendMessage(message.chat_id, notice)
-                log_dialog(message, reply)
+                reply = sendMessage(sender, notice)
+                
             return
 
-    return bot.sendMessage(message.chat_id, text)
+    return sendMessage(sender, text)
 
-def cmd_load(bot, message, z5bot, chat):
+def cmd_load(sender, message, z5bot, chat):
     if not chat.has_story():
         text = 'You have to select a game first.'
-        return bot.sendMessage(message.chat_id, text)
+        return sendMessage(sender, text)
         
-    if not z5bot.redis.exists('%d:%s' % (message.chat_id, chat.story.abbrev)):
+    if not z5bot.redis.exists('%d:%s' % (sender, chat.story.abbrev)):
         text = 'There is no progress to load.'
-        return bot.sendMessage(message.chat_id, text)
+        return sendMessage(sender, text)
 
-    text = 'Restoring %d messages. Please wait.' % z5bot.redis.llen('%d:%s' % (message.chat_id, chat.story.abbrev))
-    reply = bot.sendMessage(message.chat_id, text)
-    log_dialog(message, reply)
+    text = 'Restoring %d messages. Please wait.' % z5bot.redis.llen('%d:%s' % (sender, chat.story.abbrev))
+    reply = sendMessage(sender, text)
+    
 
-    saved_messages = z5bot.redis.lrange('%d:%s' % (message.chat_id, chat.story.abbrev), 0, -1)
+    saved_messages = z5bot.redis.lrange('%d:%s' % (sender, chat.story.abbrev), 0, -1)
 
     for index, db_message in enumerate(saved_messages):
-        z5bot.process(message.chat_id, db_message.decode('utf-8'))
+        z5bot.process(sender, db_message.decode('utf-8'))
         if index == len(saved_messages)-2:
-            z5bot.receive(message.chat_id) # clear buffer
-    reply = bot.sendMessage(message.chat_id, 'Done.')
-    log_dialog(message, reply)
-    return bot.sendMessage(message.chat_id, z5bot.receive(message.chat_id))
+            z5bot.receive(sender) # clear buffer
+    reply = sendMessage(sender, 'Done.')
+    
+    return sendMessage(sender, z5bot.receive(sender))
 
 
-def cmd_clear(bot, message, z5bot, chat):
-    if not z5bot.redis.exists('%d:%s' % (message.chat_id, chat.story.abbrev)):
+def cmd_clear(sender, message, z5bot, chat):
+    if not z5bot.redis.exists('%d:%s' % (sender, chat.story.abbrev)):
         text = 'There is no progress to clear.'
-        return bot.sendMessage(message.chat_id, text)
+        return sendMessage(sender, text)
 
-    text = 'Deleting %d messages. Please wait.' % z5bot.redis.llen('%d:%s' % (message.chat_id, chat.story.abbrev))
-    reply = bot.sendMessage(message.chat_id, text)
-    log_dialog(message, reply)
+    text = 'Deleting %d messages. Please wait.' % z5bot.redis.llen('%d:%s' % (sender, chat.story.abbrev))
+    reply = sendMessage(sender, text)
+    
 
-    z5bot.redis.delete('%d:%s' % (message.chat_id, chat.story.abbrev))
-    return bot.sendMessage(message.chat_id, 'Done.')
+    z5bot.redis.delete('%d:%s' % (sender, chat.story.abbrev))
+    return sendMessage(sender, 'Done.')
 
-def cmd_enter(bot, message, z5bot, chat):
+def cmd_enter(sender, message, z5bot, chat):
     if not chat.has_story():
         return
 
     command = '' # \r\n is automatically added by the Frotz abstraction layer
-    z5bot.redis.rpush('%d:%s' % (message.chat_id, chat.story.abbrev), command)
-    z5bot.process(message.chat_id, command)
-    return bot.sendMessage(message.chat_id, z5bot.receive(message.chat_id))
+    z5bot.redis.rpush('%d:%s' % (sender, chat.story.abbrev), command)
+    z5bot.process(sender, command)
+    return sendMessage(sender, z5bot.receive(sender))
 
-def cmd_broadcast(bot, message, z5bot, *args):
+def cmd_broadcast(sender, message, z5bot, *args):
     if z5bot.broadcasted or len(sys.argv) <= 1:
         return
 
@@ -185,7 +190,7 @@ def cmd_broadcast(bot, message, z5bot, *args):
     for chat_id in active_chats:
         logging.info('Notifying %d...' % chat_id)
         try:
-            bot.sendMessage(chat_id, notice)
+            sendMessage(chat_id, notice)
         except:
             continue
         time.sleep(2) # cooldown
@@ -194,19 +199,8 @@ def cmd_broadcast(bot, message, z5bot, *args):
 def cmd_ignore(*args):
     return
 
-def cmd_ping(bot, message, *args):
-    return bot.sendMessage(message.chat_id, 'Pong!')
-
-
-def on_message(bot, update):
-    message = update.message
-    z5bot = models.Z5Bot.get_instance_or_create()
-    func = z5bot.parser.get_function(message.text)
-    chat = models.Chat.get_instance_or_create(message.chat_id)
-
-    out_message = func(bot, message, z5bot, chat)
-
-    log_dialog(message, out_message)
+def cmd_ping(sender, message, *args):
+    return sendMessage(sender, 'Pong!')
 
 
 if __name__ == '__main__':
