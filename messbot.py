@@ -77,7 +77,8 @@ def handle_messages():
         chat = models.Chat.get_instance_or_create(int(sender))
         func(sender, message, z5bot, chat)
         
-        
+    return "ok"
+  
 #Sorts messages
 def messaging_events(payload):
   """Generate tuples of (sender_id, message_text) from the
