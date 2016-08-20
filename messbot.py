@@ -37,7 +37,25 @@ def handle_messages():
     print "Handling Messages"
     payload = request.get_data()
     z5bot = models.Z5Bot.get_instance_or_create()
-    
+    p = parser.Parser()
+    p.add_default(cmd_default)
+    p.add_command('/start', cmd_start)
+    p.add_command('/select', cmd_select)
+    p.add_command('/load', cmd_load)
+    p.add_command('/clear', cmd_clear)
+    p.add_command('/enter', cmd_enter)
+    p.add_command('/broadcast', cmd_broadcast)
+    p.add_command('/i', cmd_ignore)
+    p.add_command('/ping', cmd_ping)
+    z5bot.add_parser(p)
+  
+    r = redis.StrictRedis(
+        host=config['redis']['host'],
+        port=config['redis']['port'],
+        db=config['redis']['db'],
+        password=config['redis']['password'],
+    )
+    z5bot.add_redis(r)
     for sender, message in messaging_events(payload):
       if type(message) is not None:
         func = z5bot.parser.get_function(message)
