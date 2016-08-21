@@ -112,7 +112,7 @@ class Z5Bot:
     """
 
     instances = []
-    interpreter = os.path.join('tools', 'dfrotz')
+    interpreter = os.path.join('./tools', 'dfrotz')
     print(interpreter)
 
     def __init__(self):
