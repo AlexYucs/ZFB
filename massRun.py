@@ -36,15 +36,15 @@ def handle_verification():
 #messaging
 @app.route('/', methods=['POST'])
 def handle_messages():
-    print "Handling Messages"
-    payload = request.get_data()
-    for sender, message in messaging_events(payload):
-            if message is 'hi':
-                    sendMessage(sender, start_info)
-            else:
-                reply = t.execute_command(message)
-                sendMessage(sender, reply)
-    return "ok"
+  print "Handling Messages"
+  payload = request.get_data()
+  for sender, message in messaging_events(payload):
+    if message is 'hi':
+      sendMessage(sender, start_info)
+    else:
+      reply = t.execute_command(message)
+      sendMessage(sender, reply)
+  return "ok"
 
 #Sorts messages
 def messaging_events(payload):
