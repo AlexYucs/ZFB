@@ -37,7 +37,7 @@ class TextPlayer:
 		if self.game_loaded_properly == True:
 
 			# Start the game process with both 'standard in' and 'standard out' pipes
-			self.game_process = Popen(['./tools/dfrotz', './stories/' + self.game_filename], stdin=PIPE, stdout=PIPE, bufsize=1)
+			self.game_process = Popen(['./tools/dfrotz', './stories/' + self.game_filename],shell=True stdin=PIPE, stdout=PIPE, bufsize=1)
 
 			# Create Queue object
 			self.output_queue = Queue()
