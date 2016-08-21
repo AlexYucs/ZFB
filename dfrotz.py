@@ -14,6 +14,8 @@ class DFrotz():
     def __init__(self, arg_frotz_path, arg_game_path):
         self.frotz_path = arg_frotz_path
         self.game_path = arg_game_path
+        print(self.frotz_path)
+        print(self.game_path)
         #print(os.path.abspath(self.frotz_path))
         try:
             self.frotz = subprocess.Popen(
