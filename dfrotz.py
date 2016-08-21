@@ -33,7 +33,7 @@ class DFrotz():
             print e.strerror
 
             sys.exit(0)
-        self.queue = queue.Queue()
+        self.queue = Queue()
         self.thread = threading.Thread(target=self.enqueue, args=(self.frotz.stdout, self.queue))
         self.thread.daemon = True
         self.thread.start()
