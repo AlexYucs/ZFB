@@ -45,7 +45,7 @@ class DFrotz():
 
     def send(self, command):
         print(command) 
-        self.frotz.stdin.write(command+'\n')#.encode('cp1252'))
+        self.frotz.stdin.write(command).encode('cp1252'))
         #try:
         #    self.frotz.stdin.flush()
         #except BrokenPipeError:
