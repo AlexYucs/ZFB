@@ -19,8 +19,8 @@ class DFrotz():
         print(self.frotz_path)
         print(self.game_path)
         st = os.stat('./tools/dfrotz')
-		os.chmod('./tools/dfrotz', st.st_mode | stat.S_IEXEC)
-		args = self.game_path
+	os.chmod('./tools/dfrotz', st.st_mode | stat.S_IEXEC)
+	args = self.game_path
         #print(os.path.abspath(self.frotz_path))
         try:
             self.frotz = Popen(
