@@ -159,7 +159,7 @@ def cmd_select(sender, message, z5bot, chat):
             
             reply = sendMessage(sender, z5bot.receive(int(sender)))
             
-            if z5bot.redis.exists('%d:%s' % (sender, chat.story.abbrev)):
+            if z5bot.redis.exists('%d:%s' % (int(sender), chat.story.abbrev)):
                 notice  = 'Some progress in %s already exists. Use /load to restore it ' % (chat.story.name)
                 notice += 'or /clear to reset your recorded actions.'
                 reply = sendMessage(sender, notice)
