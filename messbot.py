@@ -95,11 +95,12 @@ def messaging_events(payload):
 def sendMessage(sender, message):
   text = message.splitlines()
   for line in text:
-    while( len(line) > 300):
-      msg1 = line[:300]
-      line = line[300:]
-      send_message(sender, msg1)
-    send_message(sender, line)
+    if len(line)>0:
+      while( len(line) > 300):
+        msg1 = line[:300]
+        line = line[300:]
+        send_message(sender, msg1)
+      send_message(sender, line)
 
 
 #Send the message. Limited to 320 char
