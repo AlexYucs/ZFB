@@ -11,7 +11,7 @@ class Story:
     of its instances.
     """
 
-    instances = []
+    instances = []f
 
     def __init__(self, name, abbrev, filename):
         """
@@ -23,7 +23,7 @@ class Story:
         self.__class__.instances.append(self)
         self.name = name
         self.abbrev = abbrev
-        self.path = os.path.join('stories', filename)
+        self.path = os.path.join('./stories', filename)
 
     @classmethod
     def get_instance_by_abbrev(self, abbrev):
@@ -111,7 +111,7 @@ class Z5Bot:
     """
 
     instances = []
-    interpreter = os.path.join('tools', 'dfrotz')
+    interpreter = os.path.join('./tools', 'dfrotz')
 
     def __init__(self):
         """
