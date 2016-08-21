@@ -46,12 +46,15 @@ class DFrotz():
 
     def send(self, command):
         print(command) 
-        self.frotz.stdin.write(command+'\n')#.encode('cp1252'))
-        #try:
-        #    self.frotz.stdin.flush()
-        #except BrokenPipeError:
-        #    debug_string = '[DEV] Pipe is broken. Please tell @mrtnb what you did.'
-        #    return debug_string
+        #.encode('cp1252'))
+        try:
+            self.frotz.stdin.write(command+'\n')
+            self.frotz.stdin.flush()
+        except BrokenPipeError as e:
+            print(e)
+            debug_string = '[DEV] Pipe is broken. Please tell @mrtnb what you did.'
+            
+            return debug_string
 
     def generate_output(self):
         self.raw_output = ''.join(self.lines)
