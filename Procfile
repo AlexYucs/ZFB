@@ -1,1 +1,1 @@
-web: gunicorn massRun:app
+web: python ./massRun.py
