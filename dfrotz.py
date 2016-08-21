@@ -44,6 +44,7 @@ class DFrotz():
         out.close()
 
     def send(self, command):
+        print(command) 
         self.frotz.stdin.write(command+'\n')#.encode('cp1252'))
         #try:
         #    self.frotz.stdin.flush()
