@@ -14,7 +14,6 @@ app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.ERROR)
 
 t = tp.TextPlayer('zork1.z5')
-start_info = t.run()
 
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
@@ -40,6 +39,8 @@ def handle_messages():
   payload = request.get_data()
   for sender, message in messaging_events(payload):
     if message is 'hi':
+      t = tp.TextPlayer('zork1.z5')
+      start_info = t.run()
       sendMessage(sender, start_info)
     else:
       reply = t.execute_command(message)
