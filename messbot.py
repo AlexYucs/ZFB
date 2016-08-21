@@ -123,14 +123,14 @@ def cmd_default(sender, message, z5bot, chat):
     if not chat.has_story():
         text = 'Please use the /select command to select a game.'
         return sendMessage(sender, text)
-
+    print("BEFORE PROCESS")
     # here, stuff is sent to the interpreter
     #z5bot.redis.rpush('%d:%s' % (sender, chat.story.abbrev), message)
     z5bot.process(int(sender), message)
-
+    print("AFTER PROCESS")
     received = z5bot.receive(int(sender))
-    reply = sendMessage(sender, received)
-
+    reply = sendMessage(sender, str(received))
+    print("AFTER RECIEVED")
     if ' return ' in received.lower() or ' enter ' in received.lower():
         notice = '(Note: You are able to do use the return key by typing /enter.)'
         return sendMessage(sender, notice)
