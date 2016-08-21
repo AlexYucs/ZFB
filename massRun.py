@@ -85,5 +85,7 @@ def send_message(recipient, text):
   if r.status_code != requests.codes.ok:
     print r.text
 
-app.run()
+
+if __name__ == '__main__':
+  app.run()
 
