@@ -20,6 +20,7 @@ class DFrotz():
         try:
             self.frotz = subprocess.Popen(
                 [self.frotz_path, self.game_path],
+                shell=True,
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,    
