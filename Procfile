@@ -1,1 +1,1 @@
-web: gunicorn messbot:app
+web: gunicorn massRun:app
