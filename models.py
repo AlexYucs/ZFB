@@ -11,7 +11,7 @@ class Story:
     of its instances.
     """
 
-    instances = []f
+    instances = []
 
     def __init__(self, name, abbrev, filename):
         """
