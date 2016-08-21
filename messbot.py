@@ -126,9 +126,9 @@ def cmd_default(sender, message, z5bot, chat):
 
     # here, stuff is sent to the interpreter
     #z5bot.redis.rpush('%d:%s' % (sender, chat.story.abbrev), message)
-    z5bot.process(sender, message)
+    z5bot.process(int(sender), message)
 
-    received = z5bot.receive(sender)
+    received = z5bot.receive(int(sender))
     reply = sendMessage(sender, received)
 
     if ' return ' in received.lower() or ' enter ' in received.lower():
@@ -184,12 +184,12 @@ def cmd_load(sender, message, z5bot, chat):
     #saved_messages = z5bot.redis.lrange('%d:%s' % (sender, chat.story.abbrev), 0, -1)
 
     for index, db_message in enumerate(saved_messages):
-        z5bot.process(sender, db_message.decode('utf-8'))
+        z5bot.process(int(sender), db_message.decode('utf-8'))
         if index == len(saved_messages)-2:
-            z5bot.receive(sender) # clear buffer
+            z5bot.receive(int(sender)) # clear buffer
     reply = sendMessage(sender, 'Done.')
     
-    return sendMessage(sender, z5bot.receive(sender))
+    return sendMessage(sender, z5bot.receive(int(sender)))
 
 
 def cmd_clear(sender, message, z5bot, chat):
@@ -210,8 +210,8 @@ def cmd_enter(sender, message, z5bot, chat):
 
     command = '' # \r\n is automatically added by the Frotz abstraction layer
     #z5bot.redis.rpush('%d:%s' % (sender, chat.story.abbrev), command)
-    z5bot.process(sender, command)
-    return sendMessage(sender, z5bot.receive(sender))
+    z5bot.process(int(sender), command)
+    return sendMessage(sender, z5bot.receive(int(sender)))
 
 def cmd_broadcast(sender, message, z5bot, *args):
     if z5bot.broadcasted or len(sys.argv) <= 1:
