@@ -10,6 +10,7 @@ import subprocess
 import sys
 import threading
 from subprocess import PIPE, Popen
+import stat
 
 class DFrotz():
     def __init__(self, arg_frotz_path, arg_game_path):
@@ -17,10 +18,14 @@ class DFrotz():
         self.game_path = arg_game_path
         print(self.frotz_path)
         print(self.game_path)
+        st = os.stat('./tools/dfrotz')
+		os.chmod('./tools/dfrotz', st.st_mode | stat.S_IEXEC)
+		args = self.game_path
         #print(os.path.abspath(self.frotz_path))
         try:
             self.frotz = Popen(
-                [self.frotz_path, self.game_path],
+                args,
+                executable = self.frotz_path,
                 shell=True,
                 stdin=PIPE,
                 stdout=PIPE,
