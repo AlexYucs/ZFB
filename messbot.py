@@ -277,4 +277,4 @@ if __name__ == '__main__':
   #)
   #z5bot.add_redis(r)
   
-  app.run()
+  app.run(threaded=True)
