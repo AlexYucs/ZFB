@@ -1,4 +1,5 @@
 import os, sys, signal, time, re
+import stat
 from signal import signal, SIGPIPE, SIG_DFL
 from subprocess import PIPE, Popen
 from threading import Thread
@@ -37,6 +38,9 @@ class TextPlayer:
 		if self.game_loaded_properly == True:
 
 			# Start the game process with both 'standard in' and 'standard out' pipes
+			st = os.stat('./tools/dfrotz')
+			os.chmod('./tools/dfrotz', st.st_mode | stat.S_IEXEC)
+
 			self.game_process = Popen(['./tools/dfrotz', './stories/' + self.game_filename],shell=True, stdin=PIPE, stdout=PIPE, bufsize=1)
 
 			# Create Queue object
