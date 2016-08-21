@@ -9,6 +9,7 @@ import Queue
 import subprocess
 import sys
 import threading
+from subprocess import PIPE, Popen
 
 class DFrotz():
     def __init__(self, arg_frotz_path, arg_game_path):
