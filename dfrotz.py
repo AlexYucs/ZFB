@@ -18,12 +18,12 @@ class DFrotz():
         print(self.game_path)
         #print(os.path.abspath(self.frotz_path))
         try:
-            self.frotz = subprocess.Popen(
+            self.frotz = Popen(
                 [self.frotz_path, self.game_path],
                 shell=True,
-                stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,    
+                stdin=PIPE,
+                stdout=PIPE,
+                  
                 bufsize=1        
             )
         except OSError as e:
@@ -45,7 +45,7 @@ class DFrotz():
 
     def send(self, command):
         print(command) 
-        self.frotz.stdin.write(command).encode('cp1252'))
+        self.frotz.stdin.write(command+'\n')#.encode('cp1252'))
         #try:
         #    self.frotz.stdin.flush()
         #except BrokenPipeError:
