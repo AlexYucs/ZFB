@@ -64,13 +64,13 @@ def handle_messages():
     p.add_command('/ping', cmd_ping)
     z5bot.add_parser(p)
   
-    r = redis.StrictRedis(
-        host=config['redis']['host'],
-        port=config['redis']['port'],
-        db=config['redis']['db'],
-        password=config['redis']['password'],
-    )
-    z5bot.add_redis(r)
+    #r = redis.StrictRedis(
+    #    host=config['redis']['host'],
+    #    port=config['redis']['port'],
+    #    db=config['redis']['db'],
+    #    password=config['redis']['password'],
+    #)
+    #z5bot.add_redis(r)
     for sender, message in messaging_events(payload):
       if type(message) is not None:
         func = z5bot.parser.get_function(message)
@@ -125,7 +125,7 @@ def cmd_default(sender, message, z5bot, chat):
         return sendMessage(sender, text)
 
     # here, stuff is sent to the interpreter
-    z5bot.redis.rpush('%d:%s' % (sender, chat.story.abbrev), message)
+    #z5bot.redis.rpush('%d:%s' % (sender, chat.story.abbrev), message)
     z5bot.process(sender, message)
 
     received = z5bot.receive(sender)
@@ -159,10 +159,10 @@ def cmd_select(sender, message, z5bot, chat):
             
             reply = sendMessage(sender, z5bot.receive(int(sender)))
             
-            if z5bot.redis.exists('%d:%s' % (int(sender), chat.story.abbrev)):
-                notice  = 'Some progress in %s already exists. Use /load to restore it ' % (chat.story.name)
-                notice += 'or /clear to reset your recorded actions.'
-                reply = sendMessage(sender, notice)
+            #if z5bot.redis.exists('%d:%s' % (int(sender), chat.story.abbrev)):
+            #    notice  = 'Some progress in %s already exists. Use /load to restore it ' % (chat.story.name)
+            #    notice += 'or /clear to reset your recorded actions.'
+            #    reply = sendMessage(sender, notice)
                 
             return
 
@@ -173,15 +173,15 @@ def cmd_load(sender, message, z5bot, chat):
         text = 'You have to select a game first.'
         return sendMessage(sender, text)
         
-    if not z5bot.redis.exists('%d:%s' % (sender, chat.story.abbrev)):
-        text = 'There is no progress to load.'
-        return sendMessage(sender, text)
+    #if not z5bot.redis.exists('%d:%s' % (sender, chat.story.abbrev)):
+    #    text = 'There is no progress to load.'
+    #    return sendMessage(sender, text)
 
-    text = 'Restoring %d messages. Please wait.' % z5bot.redis.llen('%d:%s' % (sender, chat.story.abbrev))
-    reply = sendMessage(sender, text)
+    #text = 'Restoring %d messages. Please wait.' % z5bot.redis.llen('%d:%s' % (sender, chat.story.abbrev))
+    #reply = sendMessage(sender, text)
     
 
-    saved_messages = z5bot.redis.lrange('%d:%s' % (sender, chat.story.abbrev), 0, -1)
+    #saved_messages = z5bot.redis.lrange('%d:%s' % (sender, chat.story.abbrev), 0, -1)
 
     for index, db_message in enumerate(saved_messages):
         z5bot.process(sender, db_message.decode('utf-8'))
@@ -193,15 +193,15 @@ def cmd_load(sender, message, z5bot, chat):
 
 
 def cmd_clear(sender, message, z5bot, chat):
-    if not z5bot.redis.exists('%d:%s' % (sender, chat.story.abbrev)):
-        text = 'There is no progress to clear.'
-        return sendMessage(sender, text)
+    #if not z5bot.redis.exists('%d:%s' % (sender, chat.story.abbrev)):
+    #    text = 'There is no progress to clear.'
+    #    return sendMessage(sender, text)
 
-    text = 'Deleting %d messages. Please wait.' % z5bot.redis.llen('%d:%s' % (sender, chat.story.abbrev))
-    reply = sendMessage(sender, text)
+    #text = 'Deleting %d messages. Please wait.' % z5bot.redis.llen('%d:%s' % (sender, chat.story.abbrev))
+    #reply = sendMessage(sender, text)
     
 
-    z5bot.redis.delete('%d:%s' % (sender, chat.story.abbrev))
+    #z5bot.redis.delete('%d:%s' % (sender, chat.story.abbrev))
     return sendMessage(sender, 'Done.')
 
 def cmd_enter(sender, message, z5bot, chat):
@@ -209,27 +209,27 @@ def cmd_enter(sender, message, z5bot, chat):
         return
 
     command = '' # \r\n is automatically added by the Frotz abstraction layer
-    z5bot.redis.rpush('%d:%s' % (sender, chat.story.abbrev), command)
+    #z5bot.redis.rpush('%d:%s' % (sender, chat.story.abbrev), command)
     z5bot.process(sender, command)
     return sendMessage(sender, z5bot.receive(sender))
 
 def cmd_broadcast(sender, message, z5bot, *args):
     if z5bot.broadcasted or len(sys.argv) <= 1:
         return
-
-    print(z5bot.redis.keys())
-    active_chats = [int(chat_id.decode('utf-8').split(':')[0]) for chat_id in z5bot.redis.keys()]
-    logging.info('Broadcasting to %d chats.' % len(active_chats))
-    with open(sys.argv[1], 'r') as f:
-        notice = f.read()
-    for chat_id in active_chats:
-        logging.info('Notifying %d...' % chat_id)
-        try:
-            sendMessage(chat_id, notice)
-        except:
-            continue
-        time.sleep(2) # cooldown
-    z5bot.broadcasted = True
+    return
+    #print(z5bot.redis.keys())
+    #active_chats = [int(chat_id.decode('utf-8').split(':')[0]) for chat_id in z5bot.redis.keys()]
+    #logging.info('Broadcasting to %d chats.' % len(active_chats))
+    #with open(sys.argv[1], 'r') as f:
+    #    notice = f.read()
+    #for chat_id in active_chats:
+    #    logging.info('Notifying %d...' % chat_id)
+    #    try:
+    #        sendMessage(chat_id, notice)
+    #    except:
+     #       continue
+    #    time.sleep(2) # cooldown
+    #z5bot.broadcasted = True
 
 def cmd_ignore(*args):
     return
@@ -269,12 +269,12 @@ if __name__ == '__main__':
   p.add_command('/ping', cmd_ping)
   z5bot.add_parser(p)
   
-  r = redis.StrictRedis(
-      host=config['redis']['host'],
-      port=config['redis']['port'],
-      db=config['redis']['db'],
-      password=config['redis']['password'],
-  )
-  z5bot.add_redis(r)
+  #r = redis.StrictRedis(
+  #    host=config['redis']['host'],
+  #    port=config['redis']['port'],
+  #    db=config['redis']['db'],
+  #    password=config['redis']['password'],
+  #)
+  #z5bot.add_redis(r)
   
   app.run()
