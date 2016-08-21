@@ -92,12 +92,21 @@ def messaging_events(payload):
     else:
       yield event["sender"]["id"], "I can't echo this"
 
+def sendMessage*(sender, message):
+  text = message.splitlines()
+  for line in text:
+    while( len(line) > 300):
+      msg1 = line[:300]
+      line = line[300:]
+      send_message(sender, msg1)
+    send_message(sender, line)
+
 
 #Send the message. Limited to 320 char
-def sendMessage(recipient, text):
+def send_Message(recipient, text):
   """Send the message text to recipient with id recipient.
   """
-
+  
   r = requests.post("https://graph.facebook.com/v2.6/me/messages",
     params={"access_token": PAT},
     data=json.dumps({
