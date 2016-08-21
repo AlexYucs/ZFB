@@ -35,6 +35,7 @@ def handle_verification():
 #messaging
 @app.route('/', methods=['POST'])
 def handle_messages():
+  global t
   print "Handling Messages"
   payload = request.get_data()
   for sender, message in messaging_events(payload):
@@ -86,6 +87,7 @@ def send_message(recipient, text):
 
 
 if __name__ == '__main__':
+  global t
   t = tp.TextPlayer('zork1.z5')
   start_info = t.run()
   app.run(threaded=True)
