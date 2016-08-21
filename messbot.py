@@ -159,7 +159,7 @@ def cmd_select(sender, message, z5bot, chat):
             notice  = 'Your progress will be saved automatically.'
             reply = sendMessage(sender, notice)
             
-            received = z5bot.receive(int(sender)
+            received = z5bot.receive(int(sender))
             print("received 2 "+str(received))
             reply = sendMessage(sender, str(received))
             
