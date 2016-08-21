@@ -69,7 +69,7 @@ class DFrotz():
         self.lines = []
         while True:
             try:
-                self.line = self.queue.get(timeout=1).decode('cp1252')
+                self.line = self.queue.get(timeout=1)#.decode('cp1252')
                 self.line = '\n'.join(' '.join(line_.split()) for line_ in self.line.split('\n'))
             except Queue.Empty:
                 print('')
