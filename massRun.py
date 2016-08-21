@@ -1,5 +1,5 @@
 import os
-import textplayer.textPlayer as tp
+import textPlayer as tp
 '''
 # For running commands on multiple games
 game_num = 1
