@@ -159,7 +159,9 @@ def cmd_select(sender, message, z5bot, chat):
             notice  = 'Your progress will be saved automatically.'
             reply = sendMessage(sender, notice)
             
-            reply = sendMessage(sender, z5bot.receive(int(sender)))
+            received = z5bot.receive(int(sender)
+            print("received 2 "+str(received))
+            reply = sendMessage(sender, str(received))
             
             #if z5bot.redis.exists('%d:%s' % (int(sender), chat.story.abbrev)):
             #    notice  = 'Some progress in %s already exists. Use /load to restore it ' % (chat.story.name)
