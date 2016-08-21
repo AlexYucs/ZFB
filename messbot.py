@@ -92,7 +92,7 @@ def messaging_events(payload):
     else:
       yield event["sender"]["id"], "I can't echo this"
 
-def sendMessage*(sender, message):
+def sendMessage(sender, message):
   text = message.splitlines()
   for line in text:
     while( len(line) > 300):
