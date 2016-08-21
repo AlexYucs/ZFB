@@ -50,7 +50,7 @@ class DFrotz():
         try:
             self.frotz.stdin.write(command+'\n')
             self.frotz.stdin.flush()
-        except BrokenPipeError as e:
+        except IOError as e:
             print(e)
             debug_string = '[DEV] Pipe is broken. Please tell @mrtnb what you did.'
             
