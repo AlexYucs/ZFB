@@ -1,1 +1,1 @@
-web: python ./massRun.py
+web: gunicorn messbot:app
