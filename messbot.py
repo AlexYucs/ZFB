@@ -129,7 +129,7 @@ def cmd_default(sender, message, z5bot, chat):
     z5bot.process(int(sender), message)
     print("AFTER PROCESS")
     received = z5bot.receive(int(sender))
-    print("recieved "+str(recieved))
+    print("recieved "+str(received))
     reply = sendMessage(sender, str(received))
     print("AFTER RECIEVED")
     if ' return ' in received.lower() or ' enter ' in received.lower():
