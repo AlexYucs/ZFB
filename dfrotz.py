@@ -25,7 +25,10 @@ class DFrotz():
             )
         except OSError as e:
             print('Couldn\'t run Frotz. Maybe wrong architecture?')
-            print(e)
+            print e.errno
+            print e.filename
+            print e.strerror
+
             sys.exit(0)
         self.queue = queue.Queue()
         self.thread = threading.Thread(target=self.enqueue, args=(self.frotz.stdout, self.queue))
