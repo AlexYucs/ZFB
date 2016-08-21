@@ -103,7 +103,7 @@ def sendMessage(sender, message):
 
 
 #Send the message. Limited to 320 char
-def send_Message(recipient, text):
+def send_message(recipient, text):
   """Send the message text to recipient with id recipient.
   """
   
