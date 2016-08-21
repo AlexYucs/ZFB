@@ -23,8 +23,9 @@ class DFrotz():
                 stderr=subprocess.PIPE,    
                 bufsize=1        
             )
-        except OSError:
+        except OSError as e:
             print('Couldn\'t run Frotz. Maybe wrong architecture?')
+            print(e)
             sys.exit(0)
         self.queue = queue.Queue()
         self.thread = threading.Thread(target=self.enqueue, args=(self.frotz.stdout, self.queue))
