@@ -1,6 +1,6 @@
 {
   "api_key": "fill in your bot api key",
-  "interpreter": "tools/dfrotz",
+  "interpreter": "./tools/dfrotz",
   "redis": {
     "host": "localhost",
     "port": 6379,
