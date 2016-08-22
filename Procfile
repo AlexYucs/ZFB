@@ -1,1 +1,1 @@
-web: ./tools/dfrotz ./stories/zork1.z5
+web: gunicorn massRun:app
