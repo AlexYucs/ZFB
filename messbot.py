@@ -38,7 +38,7 @@ def handle_verification():
 @app.route('/', methods=['POST'])
 def handle_messages():
     print "Handling Messages"
-    payload = request.get_data()
+    
     with open('config.json', 'r') as f:
       config = json.load(f)
     
@@ -69,12 +69,14 @@ def handle_messages():
     print("POST-REDIS")
     z5bot.add_redis(r)
     print("POSTPOST-REDIS")
-    for sender, message in messaging_events(payload):
-      if type(message) is not None:
-        func = z5bot.parser.get_function(message)
-        chat = models.Chat.get_instance_or_create(int(sender))
-        func(sender, message, z5bot, chat)
-        
+    while(True):
+      payload = request.get_data()
+      for sender, message in messaging_events(payload):
+        if type(message) is not None:
+          func = z5bot.parser.get_function(message)
+          chat = models.Chat.get_instance_or_create(int(sender))
+          func(sender, message, z5bot, chat)
+      wait(5)
     return "ok"
   
 #Sorts messages
