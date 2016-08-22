@@ -76,7 +76,7 @@ def handle_messages():
           func = z5bot.parser.get_function(message)
           chat = models.Chat.get_instance_or_create(int(sender))
           func(sender, message, z5bot, chat)
-      wait(5)
+      time.sleep(5)
     return "ok"
   
 #Sorts messages
