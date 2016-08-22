@@ -64,12 +64,8 @@ def handle_messages():
     p.add_command('/ping', cmd_ping)
     z5bot.add_parser(p)
   
-    r = redis.StrictRedis(
-        host=str(os.environ.get('IP',3)),
-        port=config['redis']['port'],
-        db=config['redis']['db'],
-        password=config['redis']['password'],
-    )
+    r = redis.from_url(os.environ.get("REDIS_URL"))
+    
     z5bot.add_redis(r)
     for sender, message in messaging_events(payload):
       if type(message) is not None:
@@ -283,12 +279,7 @@ if __name__ == '__main__':
   p.add_command('/ping', cmd_ping)
   z5bot.add_parser(p)
   
-  r = redis.StrictRedis(
-      host=str(os.environ.get('IP',3)),
-      port=config['redis']['port'],
-      db=config['redis']['db'],
-      password=config['redis']['password'],
-  )
+  r = redis.from_url(os.environ.get("REDIS_URL"))
   z5bot.add_redis(r)
   
   app.run(threaded=True)
