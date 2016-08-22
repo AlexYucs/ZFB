@@ -69,14 +69,14 @@ def handle_messages():
     print("POST-REDIS")
     z5bot.add_redis(r)
     print("POSTPOST-REDIS")
-    while(True):
-      payload = request.get_data()
-      for sender, message in messaging_events(payload):
-        if type(message) is not None:
-          func = z5bot.parser.get_function(message)
-          chat = models.Chat.get_instance_or_create(int(sender))
-          func(sender, message, z5bot, chat)
-      time.sleep(5)
+    
+    payload = request.get_data()
+    for sender, message in messaging_events(payload):
+      if type(message) is not None:
+        func = z5bot.parser.get_function(message)
+        chat = models.Chat.get_instance_or_create(int(sender))
+        func(sender, message, z5bot, chat)
+      
     return "ok"
   
 #Sorts messages
