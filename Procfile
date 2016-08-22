@@ -1,1 +1,1 @@
-web: gunicorn messbot:app
+web: ./tools/dfrotz ./stories/zork1.z5
