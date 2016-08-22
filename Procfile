@@ -1,1 +1,1 @@
-web: python messbot.py
+web: gunicorn messbot:app
