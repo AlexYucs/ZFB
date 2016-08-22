@@ -130,9 +130,9 @@ def cmd_default(sender, message, z5bot, chat):
         text = 'Your progress is being saved automatically. But /load is available.'
         return sendMessage(sender, text)
 
-    if not chat.has_story():
-        text = 'Please use the /select command to select a game.'
-        return sendMessage(sender, text)
+    #if not chat.has_story():
+    #    text = 'Please use the /select command to select a game.'
+    #    return sendMessage(sender, text)
     print("BEFORE PROCESS")
     # here, stuff is sent to the interpreter
     z5bot.redis.rpush('%d:%s' % (sender, chat.story.abbrev), message)
