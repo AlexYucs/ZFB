@@ -284,7 +284,7 @@ if __name__ == '__main__':
   z5bot.add_parser(p)
   
   r = redis.StrictRedis(
-      host=config['redis']['host'],
+      host=str(os.environ.get('IP',3)),
       port=config['redis']['port'],
       db=config['redis']['db'],
       password=config['redis']['password'],
