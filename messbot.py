@@ -64,9 +64,11 @@ def handle_messages():
     p.add_command('/ping', cmd_ping)
     z5bot.add_parser(p)
   
+    print("PRE-REDIS")
     r = redis.from_url(os.environ.get("REDIS_URL"))
-    
+    print("POST-REDIS")
     z5bot.add_redis(r)
+    print("POSTPOST-REDIS")
     for sender, message in messaging_events(payload):
       if type(message) is not None:
         func = z5bot.parser.get_function(message)
