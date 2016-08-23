@@ -132,7 +132,7 @@ def cmd_default(sender, message, z5bot, chat):
         return sendMessage(sender, text)
 
     if not chat.has_story():
-        text = 'Please use the /select command to select a game.'
+        text = 'Please use the /select command to see a list of games.'
         return sendMessage(sender, text)
     print("BEFORE PROCESS")
     # here, stuff is sent to the interpreter
@@ -149,8 +149,8 @@ def cmd_default(sender, message, z5bot, chat):
         return sendMessage(sender, notice)
 
 def cmd_start(sender, message, *args):
-    text =  'Welcome!\n' 
-    text += 'Please use the /select command to select a game.\n'
+    text =  'Hello there!\n' 
+    text += 'Please use the /select command to see a list of games.\n'
     return sendMessage(sender, text)
 
 def cmd_select(sender, message, z5bot, chat):
