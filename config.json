@@ -15,6 +15,11 @@
       "name": "Zork 3",
       "abbrev": "z3",
       "filename": "zork3.z5"
+    },
+    {
+      "name": "HitchHiker's Guide to the Galaxy",
+      "abbrev": "hhg",
+      "filename": "hhgg.z3"
     }
   ]
 }
