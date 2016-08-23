@@ -45,6 +45,11 @@
       "name": "Photopia",
       "abbrev": "pho",
       "filename": "photopia.z5"
+    },
+    {
+      "name": "Shade"",
+      "abbrev": "sh",
+      "filename": "shade.z5"
     }
   ]
 }
