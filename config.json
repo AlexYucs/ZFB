@@ -20,6 +20,31 @@
       "name": "HitchHiker's Guide to the Galaxy",
       "abbrev": "hhg",
       "filename": "hhgg.z3"
+    },
+    {
+      "name": "For a Change",
+      "abbrev": "fc",
+      "filename": "change.z5"
+    },
+    {
+      "name": "Varicella",
+      "abbrev": "vg",
+      "filename": "vgame.z8"
+    },
+    {
+      "name": "Lost Pig",
+      "abbrev": "lp",
+      "filename": "LostPig.z8"
+    },
+    {
+      "name": "9:05",
+      "abbrev": "905",
+      "filename": "905.z5"
+    },
+    {
+      "name": "Photopia",
+      "abbrev": "pho",
+      "filename": "photopia.z5"
     }
   ]
 }
