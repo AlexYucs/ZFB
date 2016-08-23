@@ -1,8 +1,7 @@
 # abstraction layer for dfrotz
 # parts for non-blocking communication are taken from
 # https://gist.github.com/EyalAr/7915597
-
-# this code is still somewhat shitty...
+# modified for heroku
 
 import os
 import Queue
