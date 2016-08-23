@@ -38,19 +38,7 @@ def handle_verification():
 @app.route('/', methods=['POST'])
 def handle_messages():
     print "Handling Messages"
-    
-    with open('config.json', 'r') as f:
-      config = json.load(f)
-    
 
-    for story in config['stories']:
-      models.Story(
-        name=story['name'],
-        abbrev=story['abbrev'],
-        filename=story['filename']
-      )
-    
-    
     z5bot = models.Z5Bot.get_instance_or_create()
     p = parser.Parser()
     p.add_default(cmd_default)
@@ -253,4 +241,16 @@ def cmd_ping(sender, message, *args):
 
 
 if __name__ == '__main__':
+      
+  with open('config.json', 'r') as f:
+    config = json.load(f)
+    
+
+  for story in config['stories']:
+    models.Story(
+      name=story['name'],
+      abbrev=story['abbrev'],
+      filename=story['filename']
+    )
+  
   app.run()#threaded=True)
