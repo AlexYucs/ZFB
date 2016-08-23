@@ -36,6 +36,18 @@ class Story:
                 return story
         return None
 
+
+    @classmethod
+    def hasStory(self, abbrev):
+        """
+        Returns true if story already exists
+        """
+        for story in self.instances:
+            if story.abbrev == abbrev:
+                return True
+        return False
+
+
     def __repr__(self):
         return '<Story: %s [%s]>' % (self.abbrev, self.path)
 
