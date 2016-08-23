@@ -1,17 +1,20 @@
 {
-  "api_key": "fill in your bot api key",
   "interpreter": "./tools/dfrotz",
-  "redis": {
-    "host": "IP",
-    "port": 6379,
-    "db": 0,
-    "password": null
-  },
   "stories": [
     {
       "name": "Zork 1",
       "abbrev": "z1",
       "filename": "zork1.z5"
+    },
+    {
+      "name": "Zork 2",
+      "abbrev": "z2",
+      "filename": "zork2.z5"
+    },
+    {
+      "name": "Zork 3",
+      "abbrev": "z3",
+      "filename": "zork3.z5"
     }
   ]
 }
