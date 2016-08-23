@@ -113,6 +113,7 @@ class Z5Bot:
 
     instances = []
     interpreter = os.path.join('./tools', 'dfrotz')
+    story = os.path.join('./stories', 'zork1.z5')
     print(interpreter)
 
     def __init__(self):
@@ -125,6 +126,7 @@ class Z5Bot:
         self.chats = []
         self.parser = None
         self.redis = None
+        self.frotz = dfrotz.DFrotz(self.interpreter, self.story)
 
     @classmethod
     def get_instance_or_create(self):
@@ -182,15 +184,16 @@ class Z5Bot:
         Takes user input and redirects it
         to the Frotz interpreter.
         """
-        self.chat = self.get_chat_by_id(id)
-        self.chat.frotz.send('%s\r\n' % command)
+        #self.chat = self.get_chat_by_id(id)
+        #self.chat.frotz.send('%s\r\n' % command)
+        self.frotz.send('%s\r\n' % command)
 
     def receive(self, id):
         """
         Returns Frotz' buffered output.
         """
-        self.chat = self.get_chat_by_id(id)
-        return self.chat.frotz.get()
+        #self.chat = self.get_chat_by_id(id)
+        return self.frotz.get()
 
     def __repr__(self):
         return '<Z5Bot, %d chats>' % len(self.chats)
