@@ -43,11 +43,14 @@ def handle_messages():
     
 
     for story in config['stories']:
-      models.Story(
-        name=story['name'],
-        abbrev=story['abbrev'],
-        filename=story['filename']
-      )
+      if models.Story.hasStory(story['abbrev']):
+        print("Already has story")
+      else:
+        models.Story(
+          name=story['name'],
+          abbrev=story['abbrev'],
+          filename=story['filename']
+        )
 
     z5bot = models.Z5Bot.get_instance_or_create()
     p = parser.Parser()
